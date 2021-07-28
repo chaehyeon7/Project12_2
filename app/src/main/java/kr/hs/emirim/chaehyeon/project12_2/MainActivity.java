@@ -32,12 +32,13 @@ public class MainActivity extends AppCompatActivity {
         Button btnInput = findViewById(R.id.btn_input);
         Button btnSearch = findViewById(R.id.btn_search);
 
-        dbHelper = new MyDBHelper(this);
+
         btnInit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 db = dbHelper.getWritableDatabase();
-                dbHelper.onUpgrade(db, 1,2);
+                db.execSQL("update groupTB set count = "+editCount.getText().toString()+"'where name='"+editName.getText().toString()+"';'");
+//                selectDB();
                 db.close();
             }
         });
@@ -46,30 +47,41 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 db = dbHelper.getWritableDatabase();
                 db.execSQL("insert into groupTB values('"+editName.getText().toString()+"',"+editCount.getText().toString()+");");
+//                selectDB();
                 db.close();
-                Toast.makeText(getApplicationContext(), "정상적으로 생이 삽입 되었습니다.", Toast.LENGTH_SHORT).show();
+
             }
         });
-
-        btnSearch.setOnClickListener(new View.OnClickListener() {
+        btnInit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db = dbHelper.getReadableDatabase();
-                Cursor cursor = db.rawQuery("select * from groupTB;", null);
-                String strName = "그룹 이름\r\n_________\r\n";
-                String strCount = "인원\r\n_________\r\n";
-                while (cursor.moveToNext()){
-                    strName += cursor.getString(0) + "\r\n";
-                    strCount += cursor.getInt(1) + "\r\n";
-                }
+                db = dbHelper.getWritableDatabase();
+                dbHelper.onUpgrade(db,1,2);
 
-                editNameResult.setText(strName);
-                editCountResult.setText(strCount);
-
-                cursor.close();
-                db.close();
             }
         });
+
+
+            dbHelper = new MyDBHelper(this);
+            btnInit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    db = dbHelper.getReadableDatabase();
+                    Cursor cursor = db.rawQuery("select * from groupTB;", null);
+                    String strName = "그룹 이름\r\n_________\r\n";
+                    String strCount = "인원\r\n_________\r\n";
+                    while (cursor.moveToNext()){
+                        strName += cursor.getString(0) + "\r\n";
+                        strCount += cursor.getInt(1) + "\r\n";
+                    }
+
+                    editNameResult.setText(strName);
+                    editCountResult.setText(strCount);
+
+                    cursor.close();
+                    db.close();
+                }
+            });
     }
 
     public class MyDBHelper extends SQLiteOpenHelper{
