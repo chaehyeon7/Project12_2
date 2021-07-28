@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name"
+            android:text="@string/count"
             android:textSize="15dp"
             android:layout_marginRight="15dp"/>
         <EditText
@@ -66,11 +66,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <EditText
-            android:id="@+id/edit_result"
-            android:background="#ffffff"
+            android:id="@+id/edit_name_result"
+            android:background="#00ff00"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <EditText
+            android:id="@+id/edit_count_result"
+            android:background="#00ff00"
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
-
-
 </LinearLayout>
